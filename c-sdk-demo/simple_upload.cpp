@@ -161,5 +161,96 @@ void simpleUploadWithPutExtra(Qiniu_Mac *mac, const char *bucket, const char *ke
 
 	Qiniu_Client_Cleanup(&client);
 	Qiniu_Global_Cleanup();
+	Qiniu_Free(upToken);
 }
 
+
+//解析持久化参数的方法
+Qiniu_Error simpleUploadWithPfopParser(void* callbackRet, Qiniu_Json* root)
+{
+	Qiniu_Error error;
+	Qiniu_Zero(error);
+
+	Qiniu_Io_PutRet_WithPfop *putRet = (Qiniu_Io_PutRet_WithPfop *)callbackRet;
+	putRet->key = Qiniu_Json_GetString(root, "key", NULL);
+	putRet->hash = Qiniu_Json_GetString(root, "hash", NULL);
+	putRet->persistentId = Qiniu_Json_GetString(root, "persistentId", NULL);
+
+	error.code = 200;
+	return error;
+}
+
+///带持久化数据处理上传，这种上传方式在文件到达七牛存储之后可以立即进行数据处理
+///提交数据处理的请求是异步的，你可以解析出服务端返回的persistentId来进行进度查询
+
+void simpleUploadWithPfop(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile)
+{
+	//实际情况下，从业务服务器获取，通过http请求
+	Qiniu_RS_PutPolicy putPolicy = Qiniu_RS_PutPolicy();
+	putPolicy.scope = bucket;
+
+	//设置图片处理指令
+	char imageViewSaveas[100];
+	char imageViewFopWebp[200];
+	char imageViewFopPng[200];
+
+	sprintf(imageViewSaveas,"%s:%s%s",bucket,key,"_80x80.webp");
+	char *imageViewSaveasEncoded = Qiniu_String_Encode(imageViewSaveas);
+	sprintf(imageViewFopWebp, "imageView2/0/w/80/h/80/format/webp|saveas/%s", imageViewSaveasEncoded);
+	Qiniu_Free(imageViewSaveasEncoded);
+
+	sprintf(imageViewSaveas, "%s:%s%s", bucket, key, "_80x80.png");
+	imageViewSaveasEncoded = Qiniu_String_Encode(imageViewSaveas);
+	sprintf(imageViewFopPng, "imageView2/0/w/80/h/80/format/png|saveas/%s", imageViewSaveasEncoded);
+	Qiniu_Free(imageViewSaveasEncoded);
+
+	char persistentFops[400];
+	sprintf(persistentFops, "%s;%s",imageViewFopWebp,imageViewFopPng);
+	
+	//set putPolicy
+	putPolicy.persistentOps = persistentFops;
+	//私有队列参数 pipeline 必须指定以加快处理速度
+	//私有队列在这里创建 https://portal.qiniu.com/create/mps
+	putPolicy.persistentPipeline = "jemy"; 
+	//处理结果主动通知地址
+	//通知的POST请求体格式固定的，可以参考 http://developer.qiniu.com/code/v6/api/dora-api/pfop/prefop.html
+	putPolicy.persistentNotifyUrl = "http://api.example.com/qiniu/pfop/notify";
+
+	char *upToken = Qiniu_RS_PutPolicy_Token(&putPolicy, mac);
+	Qiniu_Error error;
+	//这里的putRet其实没有用，解析回复都在putRetExtra中
+	//但是因为sdk的逻辑问题，所以不能去掉
+	Qiniu_Io_PutRet putRet;
+	Qiniu_Io_PutRet_WithPfop putRetExtra;
+
+	Qiniu_Io_PutExtra putExtra;
+	Qiniu_Zero(putRet);
+	Qiniu_Zero(putExtra);
+	Qiniu_Zero(putRetExtra);
+	Qiniu_Zero(error);
+
+	putExtra.callbackRet = &putRetExtra;
+	putExtra.callbackRetParser = simpleUploadWithPfopParser;
+
+	//初始化
+	Qiniu_Client client;
+	Qiniu_Global_Init(-1);
+	Qiniu_Client_InitNoAuth(&client, 1024);
+	//上传
+	error = Qiniu_Io_PutFile(&client, &putRet, upToken, key, localFile, &putExtra);
+	if (error.code != 200)
+	{
+		printf("%d\n", error.code);
+		printf("%s\n", error.message);
+	}
+	else
+	{
+		printf("Key: %s\n", putRetExtra.key);
+		printf("Hash: %s\n", putRetExtra.hash);
+		printf("PersistentId: %s\n", putRetExtra.persistentId);
+	}
+
+	Qiniu_Client_Cleanup(&client);
+	Qiniu_Global_Cleanup();
+	Qiniu_Free(upToken);
+}
