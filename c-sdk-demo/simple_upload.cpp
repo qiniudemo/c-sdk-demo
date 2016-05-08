@@ -254,3 +254,86 @@ void simpleUploadWithPfop(Qiniu_Mac *mac, const char *bucket, const char *key, c
 	Qiniu_Global_Cleanup();
 	Qiniu_Free(upToken);
 }
+
+//带回调业务服务器上传，在文件上传到七牛之后，七牛会根据指定的CallbackUrl
+//将CallbackBody的内容回调到业务服务器，其中CallbackBody的内容可以包含关于
+//该文件的内置变量信息（比如文件保存在空间的名字和hash值），也可以包含客户端
+//指定的扩展参数信息，这些信息只要在CallbackBody中按照占位符的方式组织即可，
+//七牛会自动将这些信息填充完毕并将结果以POST BODY的方式发送到业务服务器，业务
+//服务器在收到回调之后，必须回复一个JSON格式的内容给到七牛，然后这个JSON格式的
+//内容会被七牛转发给客户端，从而实现了业务服务器和客户端的信息交互。
+
+//解析持久化参数的方法
+Qiniu_Error simpleUploadWithCallbackParser(void* callbackRet, Qiniu_Json* root)
+{
+	Qiniu_Error error;
+	Qiniu_Zero(error);
+
+	Qiniu_Io_PutRet_WithCallback *putRet = (Qiniu_Io_PutRet_WithCallback *)callbackRet;
+	putRet->code =(int)Qiniu_Json_GetInt64(root,"code",NULL);
+	putRet->message = Qiniu_Json_GetString(root, "message", NULL);
+
+	error.code = 200;
+	return error;
+}
+
+void simpleUploadWithCallback(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile)
+{
+	//实际情况下，从业务服务器获取，通过http请求
+	Qiniu_RS_PutPolicy putPolicy = Qiniu_RS_PutPolicy();
+	putPolicy.scope = bucket;
+
+	//设置回调地址和回调Body格式
+	putPolicy.callbackUrl = "http://api.example.com/qiniu/callback";
+	putPolicy.callbackBody = "key=$(key)&hash=$(etag)&param1=$(x:hello)&param2=$(x:qiniu)";
+
+	//生成上传凭证
+	char *upToken = Qiniu_RS_PutPolicy_Token(&putPolicy, mac);
+	Qiniu_Error error;
+	Qiniu_Io_PutRet putRet;
+	Qiniu_Io_PutRet_WithCallback putRetCallback;
+
+	Qiniu_Io_PutExtra putExtra;
+	Qiniu_Zero(putRet);
+	Qiniu_Zero(putExtra);
+	Qiniu_Zero(putRetCallback);
+	Qiniu_Zero(error);
+
+	//扩展参数
+	Qiniu_Io_PutExtraParam param1;
+	param1.key = "x:hello";
+	param1.value = "hello world";
+	Qiniu_Io_PutExtraParam param2;
+	param2.key = "x:qiniu";
+	param2.value = "qiniu storage";
+	//将扩展参数连接起来
+	param1.next = &param2;
+	param2.next = NULL;
+
+	putExtra.params = &param1;
+	putExtra.callbackRet = &putRetCallback;
+	putExtra.callbackRetParser = simpleUploadWithCallbackParser;
+
+	//初始化
+	Qiniu_Client client;
+	Qiniu_Global_Init(-1);
+	Qiniu_Client_InitNoAuth(&client, 1024);
+	Qiniu_Zero(putRet);
+	Qiniu_Zero(error);
+	//上传
+	error = Qiniu_Io_PutFile(&client, &putRet, upToken, key, localFile, &putExtra);
+	if (error.code != 200)
+	{
+		printf("%d\n", error.code);
+		printf("%s\n", error.message);
+	}
+	else
+	{
+		printf("Key: %s\n", putRet.key);
+		printf("Hash: %s\n", putRet.hash);
+	}
+
+	Qiniu_Client_Cleanup(&client);
+	Qiniu_Global_Cleanup();
+	Qiniu_Free(upToken);
+}

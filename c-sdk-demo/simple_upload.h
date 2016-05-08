@@ -1,7 +1,7 @@
 #pragma once
 #include "qiniu/http.h"
 
-typedef struct _Qiniu_Io_PutRetWithExtra {
+typedef struct _Qiniu_Io_PutRet_WithExtra {
 	const char* key;
 	const char* hash;
  	const char* param1;
@@ -14,7 +14,13 @@ typedef struct _Qiniu_Io_PutRet_WithPfop {
 	const char *persistentId;
 }Qiniu_Io_PutRet_WithPfop;
 
+typedef struct _Qiniu_Io_PutRet_WithCallback {
+	int code;
+	const char* message;
+}Qiniu_Io_PutRet_WithCallback;
+
 void simpleUploadWithoutKey(Qiniu_Mac *mac, const char *bucket, const char *localFile);
 void simpleUploadWithKey(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile);
 void simpleUploadWithPutExtra(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile);
 void simpleUploadWithPfop(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile);
+void simpleUploadWithCallback(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile);
