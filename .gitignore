@@ -30,3 +30,11 @@
 
 # Debug files
 *.dSYM/
+c-sdk-demo/Debug/
+c-sdk-demo/Release/
+c-sdk-demo.VC
+.vs/c-sdk-demo/v14/.suo
+Debug/c-sdk-demo.ilk
+Debug/c-sdk-demo.pdb
+c-sdk-demo.VC.VC.opendb
+c-sdk-demo.VC.db
