@@ -82,6 +82,11 @@ void simpleUploadWithKey(Qiniu_Mac *mac, const char *bucket,const char *key, con
 }
 
 
+
+//带扩展参数上传，所谓扩展参数就是除了七牛规定的参数之外的请求参数， 
+//必须符合一定的命名规则，而且值不能为空。
+//指定mimeType上传，在客户端指定上传文件的类型
+
 //解析扩展参数的方法
 Qiniu_Error simpleUploadWithPutExtraParser(void* callbackRet, Qiniu_Json* root)
 {
@@ -98,12 +103,7 @@ Qiniu_Error simpleUploadWithPutExtraParser(void* callbackRet, Qiniu_Json* root)
 	return error;
 }
 
-//带扩展参数上传，所谓扩展参数就是除了七牛规定的参数之外的请求参数， 
-//必须符合一定的命名规则，而且值不能为空。
 
-//指定mimeType上传，在客户端指定上传文件的类型
-
-//带crc32校验上传，启用文件上传的内容crc32校验
 void simpleUploadWithPutExtra(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile)
 {
 	//实际情况下，从业务服务器获取，通过http请求
@@ -165,6 +165,9 @@ void simpleUploadWithPutExtra(Qiniu_Mac *mac, const char *bucket, const char *ke
 }
 
 
+///带持久化数据处理上传，这种上传方式在文件到达七牛存储之后可以立即进行数据处理
+///提交数据处理的请求是异步的，你可以解析出服务端返回的persistentId来进行进度查询
+
 //解析持久化参数的方法
 Qiniu_Error simpleUploadWithPfopParser(void* callbackRet, Qiniu_Json* root)
 {
@@ -179,9 +182,6 @@ Qiniu_Error simpleUploadWithPfopParser(void* callbackRet, Qiniu_Json* root)
 	error.code = 200;
 	return error;
 }
-
-///带持久化数据处理上传，这种上传方式在文件到达七牛存储之后可以立即进行数据处理
-///提交数据处理的请求是异步的，你可以解析出服务端返回的persistentId来进行进度查询
 
 void simpleUploadWithPfop(Qiniu_Mac *mac, const char *bucket, const char *key, const char *localFile)
 {
@@ -263,7 +263,7 @@ void simpleUploadWithPfop(Qiniu_Mac *mac, const char *bucket, const char *key, c
 //服务器在收到回调之后，必须回复一个JSON格式的内容给到七牛，然后这个JSON格式的
 //内容会被七牛转发给客户端，从而实现了业务服务器和客户端的信息交互。
 
-//解析持久化参数的方法
+//解析回调参数的方法
 Qiniu_Error simpleUploadWithCallbackParser(void* callbackRet, Qiniu_Json* root)
 {
 	Qiniu_Error error;

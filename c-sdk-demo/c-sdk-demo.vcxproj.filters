@@ -21,9 +21,15 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="resumable_upload.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_upload.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resumable_upload.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
