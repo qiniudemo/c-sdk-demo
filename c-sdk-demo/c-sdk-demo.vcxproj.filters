@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\cJSON">
+      <UniqueIdentifier>{20b53d4a-9109-474a-90d3-4e29820828ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\cJSON">
+      <UniqueIdentifier>{f14974c3-4229-4a29-9a9b-e5243bd8b47d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="simple_upload.cpp">
@@ -24,13 +30,19 @@
     <ClCompile Include="resumable_upload.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="cJSON\cJSON.c">
+      <Filter>源文件\cJSON</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="simple_upload.h">
-      <Filter>源文件</Filter>
+    <ClInclude Include="cJSON\cJSON.h">
+      <Filter>头文件\cJSON</Filter>
     </ClInclude>
     <ClInclude Include="resumable_upload.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_upload.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

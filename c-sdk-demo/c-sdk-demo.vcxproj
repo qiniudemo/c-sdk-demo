@@ -150,11 +150,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cJSON\cJSON.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="resumable_upload.cpp" />
     <ClCompile Include="simple_upload.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cJSON\cJSON.h" />
     <ClInclude Include="resumable_upload.h" />
     <ClInclude Include="simple_upload.h" />
   </ItemGroup>
