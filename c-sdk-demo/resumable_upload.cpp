@@ -49,11 +49,19 @@ char *resumableProgressMarshal(Qiniu_Rio_BlkputRet *putRets, int blockCnt)
 		Qiniu_Rio_BlkputRet *blk = putRets+i;
 		if (blk && blk->ctx)
 		{
+			cJSON_AddStringToObject(item, "host", blk->host);
 			cJSON_AddStringToObject(item, "ctx", blk->ctx);
+			cJSON_AddStringToObject(item, "checksum", blk->checksum);
+			cJSON_AddNumberToObject(item, "crc32", blk->crc32);
+			cJSON_AddNumberToObject(item, "offset", blk->offset);
 		}
 		else
 		{
-			cJSON_AddStringToObject(item, "ctx", "");
+			cJSON_AddNullToObject(item, "host",cJSON_CreateNull());
+			cJSON_AddNullToObject(item, "ctx", cJSON_CreateNull());
+			cJSON_AddNullToObject(item, "checksum", cJSON_CreateNull());
+			cJSON_AddNumberToObject(item, "crc32", 0);
+			cJSON_AddNumberToObject(item, "offset", 0);
 		}
 
 		cJSON_AddItemToArray(root, item);
@@ -72,7 +80,7 @@ int resumableUploadNotify(void* recvr, int blkIdx, int blkSize, Qiniu_Rio_Blkput
 	
 	if (pRecvr->progressFilePath)
 	{
-		if (ret->offset % BLOCK_SIZE == 0 || ret->offset == pRecvr->fsize)
+		if (ret->offset % BLOCK_SIZE == 0 || blkIdx==pRecvr->blkCnt-1)
 		{
 			printf("Write block %d progress\n", blkIdx);
 			Qiniu_Rio_BlkputRet *blk = pRecvr->blkputRets+blkIdx;
@@ -123,6 +131,8 @@ void resumableUploadWithKey(Qiniu_Mac *mac, const char *bucket, const char *key,
 	Qiniu_Rio_PutExtra putExtra;
 	int blockCnt = 0;
 	int blockIndex = 0;
+	int progressFileLen = 0;
+	int recordBlockCnt = 0;
 
 	//初始化
 	Qiniu_Client client;
@@ -149,8 +159,41 @@ void resumableUploadWithKey(Qiniu_Mac *mac, const char *bucket, const char *key,
 	putProgressRecvr.progressFilePath = progressFilePath;
 	printf("Local progress file is %s\n",putProgressRecvr.progressFilePath);
 	//尝试读取本地进度
+	FILE *progressRecordHandle = fopen(progressFilePath, "rb+");
+	if (progressRecordHandle)
+	{
+		fseek(progressRecordHandle, 0l, SEEK_END);
+		progressFileLen = ftell(progressRecordHandle);
+		char *progressBuffer = (char*)malloc(sizeof(char)*(progressFileLen+1));
+		//reset
+		fseek(progressRecordHandle,0L,SEEK_SET);
+		while (!feof(progressRecordHandle))
+		{
+			fread(progressBuffer, sizeof(char), progressFileLen, progressRecordHandle);
+		}
+		fclose(progressRecordHandle);
+		progressBuffer[progressFileLen] = '\0';
 
+		cJSON *root = cJSON_Parse(progressBuffer);
+		int ctxCnt=cJSON_GetArraySize(root);
+		for (int i = 0; i < ctxCnt; i++)
+		{
+			cJSON *item = cJSON_GetArrayItem(root, i);
+			Qiniu_Rio_BlkputRet bputRet;
+			bputRet.ctx = strdup(Qiniu_Json_GetString(item,"ctx",NULL));
+			bputRet.host = strdup(Qiniu_Json_GetString(item,"host",NULL));
+			bputRet.checksum = strdup(Qiniu_Json_GetString(item,"checksum",NULL));
+			bputRet.crc32 = Qiniu_Json_GetInt64(item,"crc32",0);
+			bputRet.offset = Qiniu_Json_GetInt64(item,"offset",0);
+			putProgressRecvr.blkputRets[i] = bputRet;
+		}
 
+		putExtra.progresses = putProgressRecvr.blkputRets;
+		putExtra.blockCnt = ctxCnt;
+		cJSON_Delete(root);
+		free(progressBuffer);
+	}
+	
 	//设置上传进度记录
 	putExtra.notifyRecvr = &putProgressRecvr;
 	putExtra.notify = resumableUploadNotify;
@@ -160,11 +203,18 @@ void resumableUploadWithKey(Qiniu_Mac *mac, const char *bucket, const char *key,
 	error = Qiniu_Rio_PutFile(&client, &putRet, upToken, key, localFile, &putExtra);
 	if (error.code != 200)
 	{
+		if (error.code == 701)
+		{
+			//如果是701，说明进度文件过期了，删除之
+			remove(progressFilePath);
+		}
 		printf("%d\n", error.code);
 		printf("%s\n", error.message);
 	}
 	else
 	{
+		//上传成功之后删除进度文件
+		remove(progressFilePath);
 		printf("Key: %s\n", putRet.key);
 		printf("Hash: %s\n", putRet.hash);
 	}
@@ -172,5 +222,6 @@ void resumableUploadWithKey(Qiniu_Mac *mac, const char *bucket, const char *key,
 	Qiniu_Client_Cleanup(&client);
 	Qiniu_Global_Cleanup();
 	Qiniu_Free(upToken);
+	free(putProgressRecvr.blkputRets);
 }
 

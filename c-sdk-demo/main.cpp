@@ -1,26 +1,31 @@
 ﻿#include "simple_upload.h"
+#include "resumable_upload.h"
 #include "qiniu/rs.h"
 #include "qiniu/http.h"
 
 int main(int argc, char*argv[])
 {
-	int exit;
-
 	char *bucket = "if-pbl";
-	char *imgKey = "2016/05/08/test.jpg";
+	char *imageKey = "2016/05/08/test.jpg";
+	char *videoKey = "2016/05/08/test.wmv22";
+
 	//从 https://portal.qiniu.com/user/key 这里获取
-	char *accessKey = "<Access Key>";
-	char *secretKey = "<Secret Key>";
+	char *accessKey = "<AccessKey>";
+	char *secretKey = "<SecretKey>";
 	Qiniu_Mac mac;
 	mac.accessKey = accessKey;
 	mac.secretKey = secretKey;
 
-	char *localFile = "C:\\Users\\xin\\Pictures\\doit.jpg";
+	char *localImageFile = "C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpg";
+	char *localVideoFile = "C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv";
 	 
-	//simpleUploadWithoutKey(&mac, bucket, localFile);
-	//simpleUploadWithKey(&mac,bucket,imgKey,localFile);
-	simpleUploadWithPutExtra(&mac,bucket,imgKey,localFile);
+	//simpleUploadWithoutKey(&mac, bucket, localImageFile);
+	//simpleUploadWithKey(&mac,bucket,imageKey,localImageFile);
+	//simpleUploadWithPutExtra(&mac,bucket,imageKey,localImageFile);
+	//simpleUploadWithPfop(&mac,bucket,imageKey,localImageFile);
+	//simpleUploadWithCallback(&mac, bucket, imageKey, localImageFile);
+	resumableUploadWithKey(&mac,bucket,videoKey,localVideoFile);
 	//wait to exit
-	scanf("%c",&exit);
+	getchar();
 	return 0;
 }
