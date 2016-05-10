@@ -193,19 +193,19 @@ void simpleUploadWithPfop(Qiniu_Mac *mac, const char *bucket, const char *key, c
 	char imageViewSaveas[100];
 	char imageViewFopWebp[200];
 	char imageViewFopPng[200];
-
-	sprintf(imageViewSaveas,"%s:%s%s",bucket,key,"_80x80.webp");
+	
+	sprintf_s(imageViewSaveas,"%s:%s%s",bucket,key,"_80x80.webp");
 	char *imageViewSaveasEncoded = Qiniu_String_Encode(imageViewSaveas);
-	sprintf(imageViewFopWebp, "imageView2/0/w/80/h/80/format/webp|saveas/%s", imageViewSaveasEncoded);
+	sprintf_s(imageViewFopWebp, "imageView2/0/w/80/h/80/format/webp|saveas/%s", imageViewSaveasEncoded);
 	Qiniu_Free(imageViewSaveasEncoded);
 
-	sprintf(imageViewSaveas, "%s:%s%s", bucket, key, "_80x80.png");
+	sprintf_s(imageViewSaveas, "%s:%s%s", bucket, key, "_80x80.png");
 	imageViewSaveasEncoded = Qiniu_String_Encode(imageViewSaveas);
-	sprintf(imageViewFopPng, "imageView2/0/w/80/h/80/format/png|saveas/%s", imageViewSaveasEncoded);
+	sprintf_s(imageViewFopPng, "imageView2/0/w/80/h/80/format/png|saveas/%s", imageViewSaveasEncoded);
 	Qiniu_Free(imageViewSaveasEncoded);
 
 	char persistentFops[400];
-	sprintf(persistentFops, "%s;%s",imageViewFopWebp,imageViewFopPng);
+	sprintf_s(persistentFops, "%s;%s",imageViewFopWebp,imageViewFopPng);
 	
 	//set putPolicy
 	putPolicy.persistentOps = persistentFops;

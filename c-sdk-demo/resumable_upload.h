@@ -4,7 +4,7 @@
 
 typedef struct _Qiniu_Rio_PutProgress_Recvr {
 	const char *progressFilePath;
-	int fsize;
+	Qiniu_Int64 fsize;
 	int blkCnt;
 	Qiniu_Rio_BlkputRet *blkputRets;
 } Qiniu_Rio_PutProgress_Recvr;

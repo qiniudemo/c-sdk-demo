@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);E:\VSProjects\c-sdk-for-windows\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;E:\VSProjects\c-sdk-for-windows\lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86;</LibraryPath>
+    <IncludePath>$(IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;..\..\c-sdk-wdeps\include;..\..\c-sdk-for-windows\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86;..\..\c-sdk-for-windows\lib;..\..\c-sdk-wdeps\lib</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath);E:\VSProjects\c-sdk-for-windows\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;E:\VSProjects\c-sdk-for-windows\lib;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86;</LibraryPath>
+    <IncludePath>$(IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;..\..\c-sdk-wdeps\include;..\..\c-sdk-for-windows\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86;..\..\c-sdk-for-windows\lib;..\..\c-sdk-wdeps\lib</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,7 +98,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\VSProjects\c-sdk-for-windows\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\VSProjects\c-sdk-for-windows\bin;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,7 +129,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\VSProjects\c-sdk-for-windows\bin</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\VSProjects\c-sdk-for-windows\bin;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
