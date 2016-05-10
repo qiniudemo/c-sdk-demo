@@ -56,7 +56,6 @@ char* getProgressFilePath(const char* bucket, const char* key,
 	sprintf(tmpData, "%s:%s:%s", bucket, key, localFilePath);
 	tmpData[dataLen - 1] = '\0';
 
-
 	MD5_Init(&ctx);
 	MD5_Update(&ctx, tmpData, strlen(tmpData));
 	MD5_Final(md, &ctx);
