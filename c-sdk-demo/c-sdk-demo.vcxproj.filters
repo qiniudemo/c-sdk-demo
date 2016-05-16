@@ -30,6 +30,9 @@
     <ClCompile Include="resumable_upload.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+<ClCompile Include="res_manage.cpp">
+      <Filter>源文件</Filter>
+    </None>
     <ClCompile Include="cJSON\cJSON.c">
       <Filter>源文件\cJSON</Filter>
     </ClCompile>
@@ -42,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="simple_upload.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="res_manage.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

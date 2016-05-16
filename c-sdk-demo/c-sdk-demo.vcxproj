@@ -29,14 +29,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -154,10 +154,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="resumable_upload.cpp" />
     <ClCompile Include="simple_upload.cpp" />
+    <ClCompile Include="res_manage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cJSON\cJSON.h" />
     <ClInclude Include="resumable_upload.h" />
+    <ClInclude Include="res_manage.h" />
     <ClInclude Include="simple_upload.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
