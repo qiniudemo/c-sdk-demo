@@ -1,54 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="源文件\cJSON">
-      <UniqueIdentifier>{20b53d4a-9109-474a-90d3-4e29820828ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\cJSON">
-      <UniqueIdentifier>{f14974c3-4229-4a29-9a9b-e5243bd8b47d}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="cJSON\cJSON.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="simple_upload.cpp" />
+    <ClCompile Include="rs_stat.c" />
+    <ClCompile Include="up_resume_upload.cpp" />
+    <ClCompile Include="debug.cpp" />
+    <ClCompile Include="cdn_create_timestamp_url.c" />
+    <ClCompile Include="cdn_get_bandwidth_data.c" />
+    <ClCompile Include="cdn_get_flux_data.c" />
+    <ClCompile Include="cdn_get_log_list.c" />
+    <ClCompile Include="cdn_prefetch_urls.c" />
+    <ClCompile Include="cdn_refresh_dirs.c" />
+    <ClCompile Include="cdn_refresh_urls.c" />
+    <ClCompile Include="fop_video_avthumb.c" />
+    <ClCompile Include="rs_batch_change_mime.c" />
+    <ClCompile Include="rs_batch_change_type.c" />
+    <ClCompile Include="rs_batch_copy.c" />
+    <ClCompile Include="rs_batch_delete.c" />
+    <ClCompile Include="rs_batch_delete_after_days.c" />
+    <ClCompile Include="rs_batch_move.c" />
+    <ClCompile Include="rs_batch_stat.c" />
+    <ClCompile Include="rs_change_mime.c" />
+    <ClCompile Include="rs_change_type.c" />
+    <ClCompile Include="rs_copy.c" />
+    <ClCompile Include="rs_delete.c" />
+    <ClCompile Include="rs_delete_after_days.c" />
+    <ClCompile Include="rs_fetch.c" />
+    <ClCompile Include="rs_move.c" />
+    <ClCompile Include="rs_prefetch.c" />
+    <ClCompile Include="rsf_list_bucket.c" />
+    <ClCompile Include="rsf_list_files.c" />
+    <ClCompile Include="up_chunk_upload.c" />
+    <ClCompile Include="up_create_uptoken.c" />
+    <ClCompile Include="up_form_upload.c" />
+    <ClCompile Include="up_resume_upload.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="simple_upload.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="resumable_upload.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-<ClCompile Include="res_manage.cpp">
-      <Filter>源文件</Filter>
-    </None>
-    <ClCompile Include="cJSON\cJSON.c">
-      <Filter>源文件\cJSON</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="cJSON\cJSON.h">
-      <Filter>头文件\cJSON</Filter>
-    </ClInclude>
-    <ClInclude Include="resumable_upload.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_upload.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="res_manage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClInclude Include="cJSON\cJSON.h" />
+    <ClInclude Include="simple_upload.h" />
+    <ClInclude Include="debug.h" />
+    <ClInclude Include="up_resume_upload.h" />
   </ItemGroup>
 </Project>

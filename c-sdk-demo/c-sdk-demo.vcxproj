@@ -28,15 +28,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;..\..\c-sdk-wdeps\include;..\..\c-sdk-for-windows\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86;..\..\c-sdk-for-windows\lib;..\..\c-sdk-wdeps\lib</LibraryPath>
+    <IncludePath>$(IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;..\..\c-sdk-for-windows\include</IncludePath>
+    <LibraryPath>E:\VSProjects\c-sdk-for-windows\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;..\..\c-sdk-wdeps\include;..\..\c-sdk-for-windows\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86;..\..\c-sdk-for-windows\lib;..\..\c-sdk-wdeps\lib</LibraryPath>
+    <IncludePath>$(IncludePath);C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt;..\..\c-sdk-for-windows\include</IncludePath>
+    <LibraryPath>E:\VSProjects\c-sdk-for-windows\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10150.0\ucrt\x86</LibraryPath>
     <LibraryWPath>$(WindowsSDK_MetadataPath);</LibraryWPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,16 +150,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cdn_create_timestamp_url.c" />
+    <ClCompile Include="cdn_get_bandwidth_data.c" />
+    <ClCompile Include="cdn_get_flux_data.c" />
+    <ClCompile Include="cdn_get_log_list.c" />
+    <ClCompile Include="cdn_prefetch_urls.c" />
+    <ClCompile Include="cdn_refresh_dirs.c" />
+    <ClCompile Include="cdn_refresh_urls.c" />
     <ClCompile Include="cJSON\cJSON.c" />
+    <ClCompile Include="debug.cpp" />
+    <ClCompile Include="fop_video_avthumb.c" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="resumable_upload.cpp" />
+    <ClCompile Include="rsf_list_bucket.c" />
+    <ClCompile Include="rsf_list_files.c" />
+    <ClCompile Include="rs_batch_change_mime.c" />
+    <ClCompile Include="rs_batch_change_type.c" />
+    <ClCompile Include="rs_batch_copy.c" />
+    <ClCompile Include="rs_batch_delete.c" />
+    <ClCompile Include="rs_batch_delete_after_days.c" />
+    <ClCompile Include="rs_batch_move.c" />
+    <ClCompile Include="rs_batch_stat.c" />
+    <ClCompile Include="rs_change_mime.c" />
+    <ClCompile Include="rs_change_type.c" />
+    <ClCompile Include="rs_copy.c" />
+    <ClCompile Include="rs_delete.c" />
+    <ClCompile Include="rs_delete_after_days.c" />
+    <ClCompile Include="rs_fetch.c" />
+    <ClCompile Include="rs_move.c" />
+    <ClCompile Include="rs_prefetch.c" />
+    <ClCompile Include="up_chunk_upload.c" />
+    <ClCompile Include="up_create_uptoken.c" />
+    <ClCompile Include="up_form_upload.c" />
+    <ClCompile Include="up_resume_upload.c" />
+    <ClCompile Include="up_resume_upload.cpp" />
+    <ClCompile Include="rs_stat.c" />
     <ClCompile Include="simple_upload.cpp" />
-    <ClCompile Include="res_manage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cJSON\cJSON.h" />
-    <ClInclude Include="resumable_upload.h" />
-    <ClInclude Include="res_manage.h" />
+    <ClInclude Include="debug.h" />
+    <ClInclude Include="up_resume_upload.h" />
     <ClInclude Include="simple_upload.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
